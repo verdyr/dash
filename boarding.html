@@ -1,0 +1,501 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+   
+    <title>Data factory Dashboard</title>
+
+    <style type="text/css">
+      body { font-size: 80%; font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; }
+      ul#tabs { list-style-type: none; margin: 30px 0 0 0; padding: 0 0 0.3em 0; }
+      ul#tabs li { display: inline; }
+      ul#tabs li a { color: #42454a; background-color: #dedbde; border: 1px solid #c9c3ba; border-bottom: none; padding: 0.3em; text-decoration: none; }
+      ul#tabs li a:hover { background-color: #f1f0ee; }
+      ul#tabs li a.selected { color: #000; background-color: #f1f0ee; font-weight: bold; padding: 0.7em 0.3em 0.38em 0.3em; }
+      div.tabContent { border: 1px solid #c9c3ba; padding: 0.5em; background-color: #f1f0ee; }
+      div.tabContent.hide { display: none; }
+      .table-header-rotated {
+          border-collapse: collapse;
+          .csstransforms & td {
+              width: 30px;
+          }
+          .no-csstransforms & th {
+              padding: 5px 10px;
+          }
+          td {
+              text-align: center;
+              padding: 10px 5px;
+              border: 1px solid #ccc;
+          }
+          .csstransforms & th.rotate {
+              height: 140px;
+              white-space: nowrap;
+              // Firefox needs the extra DIV for some reason, otherwise the text disappears if you rotate
+              > div {
+                  transform:
+                  // Magic Numbers
+                  translate(25px, 51px)
+                  // 45 is really 360-45
+                  rotate(315deg);
+                  width: 30px;
+              }
+              > div > span {
+                  border-bottom: 1px solid #ccc;
+                  padding: 5px 10px;
+              }
+          }
+          th.row-header {
+              padding: 0 10px;
+              border-bottom: 1px solid #ccc;
+          }
+      }
+    </style>
+
+    <script type="text/javascript">
+    
+
+    var tabLinks = new Array();
+    var contentDivs = new Array();
+
+    function init() {
+
+      // Grab the tab links and content divs from the page
+      var tabListItems = document.getElementById('tabs').childNodes;
+      for ( var i = 0; i < tabListItems.length; i++ ) {
+        if ( tabListItems[i].nodeName == "LI" ) {
+          var tabLink = getFirstChildWithTagName( tabListItems[i], 'A' );
+          var id = getHash( tabLink.getAttribute('href') );
+          tabLinks[id] = tabLink;
+          contentDivs[id] = document.getElementById( id );
+        }
+      }
+
+      // Assign onclick events to the tab links, and
+      // highlight the first tab
+      var i = 0;
+
+      for ( var id in tabLinks ) {
+        tabLinks[id].onclick = showTab;
+        tabLinks[id].onfocus = function() { this.blur() };
+        if ( i == 0 ) tabLinks[id].className = 'selected';
+        i++;
+      }
+
+      // Hide all content divs except the first
+      var i = 0;
+
+      for ( var id in contentDivs ) {
+        if ( i != 0 ) contentDivs[id].className = 'tabContent hide';
+        i++;
+      }
+    }
+
+    function showTab() {
+      var selectedId = getHash( this.getAttribute('href') );
+
+      // Highlight the selected tab, and dim all others.
+      // Also show the selected content div, and hide all others.
+      for ( var id in contentDivs ) {
+        if ( id == selectedId ) {
+          tabLinks[id].className = 'selected';
+          contentDivs[id].className = 'tabContent';
+        } else {
+          tabLinks[id].className = '';
+          contentDivs[id].className = 'tabContent hide';
+        }
+      }
+
+      // Stop the browser following the link
+      return false;
+    }
+
+    function getFirstChildWithTagName( element, tagName ) {
+      for ( var i = 0; i < element.childNodes.length; i++ ) {
+        if ( element.childNodes[i].nodeName == tagName ) return element.childNodes[i];
+      }
+    }
+
+    function getHash( url ) {
+      var hashPos = url.lastIndexOf ( '#' );
+      return url.substring( hashPos + 1 );
+    }
+
+    //]]>
+    </script>
+  </head>
+  <body onload="init()">
+    <h1>Data and Platform onboarding</h1>
+
+    <ul id="tabs">
+      <li><a href="http://localhost/catalogue.html#about" class="selected">About Onboarding</a></li>
+      <li><a href="http://localhost/catalogue.html#project" class="">Project details</a></li>
+      <li><a href="http://localhost/catalogue.html#usage" class="">Data technology used</a></li>
+      <li><a href="http://localhost/catalogue.html#persistency" class="">Data persistency</a></li>
+      <li><a href="http://localhost/catalogue.html#apps" class="">App layer technology used</a></li>
+      <li><a href="http://localhost/catalogue.html#servers" class="">Number of containers/images</a></li>
+      <li><a href="http://localhost/catalogue.html#size" class="">Data size</a></li>
+      <li><a href="http://localhost/catalogue.html#costs" class="">Data costs</a></li>
+      <li><a href="http://localhost/catalogue.html#changes" class="">Data changes</a></li>
+    </ul>
+
+    <div class="tabContent" id="about">
+      <h2>About Data catalogue</h2>
+      <div>
+        <p>Data and Platform onboarding automates the onboarding.</p>
+        <p>The content is automatically inserted to the tenant tables in the platform.</p> 
+	<p>Before input data, please make sure that the project details are accurate.</p>
+      </div>
+    </div>
+
+    <div class="tabContent hide" id="project">
+      <h2>Project details</h2>
+      <div>
+        <p>Please enter or update or remove the project details.</p>
+        <p>Make sure that you entered correct data for Unit, Scope, Contact person, Data lifecycle and Project name.</p>
+        
+      </div>
+    </div>
+
+    <div class="tabContent hide" id="usage">
+      <h2>Data Technology used</h2>
+      <div>
+        <p>Click Data technology to view the Data and Platform content for selected Project. Using radio button update or enter the values.</p>
+        <table class="table table-header-rotated">
+            <thead>
+                <tr>
+                    <!-- First column header is not rotated -->
+                    <th></th>
+                    <!-- Following headers are rotated -->
+                    <th class="rotate"><div><span>In-memory structures</span></div></th>
+                    <th class="rotate"><div><span>NFS</span></div></th>
+                    <th class="rotate"><div><span>Flat files</span></div></th>
+                    <th class="rotate"><div><span>MapR-FS / HDFS</span></div></th>
+                    <th class="rotate"><div><span>ElasticSearch / Kibana</span></div></th>
+                    <th class="rotate"><div><span>Oracle express</span></div></th>
+                    <th class="rotate"><div><span>DB2 express</span></div></th>
+                    <th class="rotate"><div><span>SQLServer for Linux</span></div></th>
+                    <th class="rotate"><div><span>MySQL</span></div></th>
+                    <th class="rotate"><div><span>PostreSQL</span></div></th>                 
+                    <th class="rotate"><div><span>RabbitMQ</span></div></th>
+                    <th class="rotate"><div><span>Redis</span></div></th>
+                    <th class="rotate"><div><span>CDC</span></div></th>
+                    <th class="rotate"><div><span>MapR-ES / Kafka</span></div></th>
+                    <th class="rotate"><div><span>MapR-DB / Hbase</span></div></th>
+                    <th class="rotate"><div><span>MapR-DB / OJAI / MongoDB</span></div></th>
+                    <th class="rotate"><div><span>K8S PV / PVC</span></div></th>
+                    <th class="rotate"><div><span>Posix</span></div></th>
+                    <th class="rotate"><div><span>Amazon S3</span></div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="row-header">Project 0</th>
+                    <td><input checked="checked" name="column1[]" type="radio" value="row1-column1"></td>
+                    <td><input checked="checked" name="column2[]" type="radio" value="row1-column2"></td>
+                    <td><input name="column3[]" type="radio" value="row1-column3"></td>
+                    <td><input name="column4[]" type="radio" value="row1-column4"></td>
+                    <td><input name="column5[]" type="radio" value="row1-column5"></td>
+                    <td><input name="column6[]" type="radio" value="row1-column6"></td>
+                </tr>
+                <tr>
+                    <th class="row-header">Project 1</th>
+                    <td><input name="column1[]" type="radio" value="row2-column1"></td>
+                    <td><input name="column2[]" type="radio" value="row2-column2"></td>
+                    <td><input checked="checked" name="column3[]" type="radio" value="row2-column3"></td>
+                    <td><input checked="checked" name="column4[]" type="radio" value="row2-column4"></td>
+                    <td><input name="column5[]" type="radio" value="row2-column5"></td>
+                    <td><input name="column6[]" type="radio" value="row2-column6"></td>
+                </tr>
+                <tr>
+                    <th class="row-header">Project 2</th>
+                    <td><input name="column1[]" type="radio" value="row3-column1"></td>
+                    <td><input name="column2[]" type="radio" value="row3-column2"></td>
+                    <td><input name="column3[]" type="radio" value="row3-column3"></td>
+                    <td><input name="column4[]" type="radio" value="row3-column4"></td>
+                    <td><input checked="checked" name="column5[]" type="radio" value="row3-column5"></td>
+                    <td><input checked="checked" name="column6[]" type="radio" value="row3-column6"></td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="tabContent" id="persistency">
+        <h2>About the Data</h2>
+        <div>
+            <p>Data can be persitent for the project or may be volatile.</p>
+            <p>Standard description can be defined and updated here for the project.</p>
+            <table class="table table-header-rotated">
+                <thead>
+                    <tr>
+                        <!-- First column header is not rotated -->
+                        <th></th>
+                        <!-- Following headers are rotated -->
+                        <th class="rotate"><div><span>Data is Read-only (master)</span></div></th>
+                        <th class="rotate"><div><span>Data is Volatile (no backups)</span></div></th>
+                        <th class="rotate"><div><span>Privacy / GDPR concern</span></div></th>
+                        <th class="rotate"><div><span>Used by Backend-Frontend</span></div></th>
+                        <th class="rotate"><div><span>Cross country service</span></div></th>
+                        <th class="rotate"><div><span>To be Federated</span></div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="row-header">Project 0</th>
+                        <td><input checked="checked" name="column1[]" type="radio" value="row1-column1"></td>
+                        <td><input checked="checked" name="column2[]" type="radio" value="row1-column2"></td>
+                        <td><input name="column3[]" type="radio" value="row1-column3"></td>
+                        <td><input name="column4[]" type="radio" value="row1-column4"></td>
+                        <td><input name="column5[]" type="radio" value="row1-column5"></td>
+                        <td><input name="column6[]" type="radio" value="row1-column6"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">Project 1</th>
+                        <td><input name="column1[]" type="radio" value="row2-column1"></td>
+                        <td><input name="column2[]" type="radio" value="row2-column2"></td>
+                        <td><input checked="checked" name="column3[]" type="radio" value="row2-column3"></td>
+                        <td><input checked="checked" name="column4[]" type="radio" value="row2-column4"></td>
+                        <td><input name="column5[]" type="radio" value="row2-column5"></td>
+                        <td><input name="column6[]" type="radio" value="row2-column6"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">Project 2</th>
+                        <td><input name="column1[]" type="radio" value="row3-column1"></td>
+                        <td><input name="column2[]" type="radio" value="row3-column2"></td>
+                        <td><input name="column3[]" type="radio" value="row3-column3"></td>
+                        <td><input name="column4[]" type="radio" value="row3-column4"></td>
+                        <td><input checked="checked" name="column5[]" type="radio" value="row3-column5"></td>
+                        <td><input checked="checked" name="column6[]" type="radio" value="row3-column6"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="tabContent hide" id="apps">
+        <h2>App layer technology used</h2>
+        <div>
+            <p>Particular application implementation technology and implementation stacks.</p>
+            <p>Technology stack can be extended or updated.</p>
+            <table class="table table-header-rotated">
+                <thead>
+                    <tr>
+                        <!-- First column header is not rotated -->
+                        <th></th>
+                        <!-- Following headers are rotated -->
+                        <th class="rotate"><div><span>Java</span></div></th>
+                        <th class="rotate"><div><span>Scala</span></div></th>
+                        <th class="rotate"><div><span>C++</span></div></th>
+                        <th class="rotate"><div><span>PHP</span></div></th>
+                        <th class="rotate"><div><span>Python</span></div></th>
+                        <th class="rotate"><div><span>Tomcat</span></div></th>
+                        <th class="rotate"><div><span>Jetty</span></div></th>
+                        <th class="rotate"><div><span>Apache httpd</span></div></th>
+
+
+                        <th class="rotate"><div><span>Big data stack / PACC</span></div></th>
+                        <th class="rotate"><div><span>Cascading / Spring</span></div></th>
+                        <th class="rotate"><div><span>Analytics / ML</span></div></th>
+                        <th class="rotate"><div><span>Hybrid stack</span></div></th>
+                        <th class="rotate"><div><span>Cloud, Azure, GCE, AWS</span></div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="row-header">Project 0</th>
+                        <td><input checked="checked" name="column1[]" type="radio" value="row1-column1"></td>
+                        <td><input checked="checked" name="column2[]" type="radio" value="row1-column2"></td>
+                        <td><input name="column3[]" type="radio" value="row1-column3"></td>
+                        <td><input name="column4[]" type="radio" value="row1-column4"></td>
+                        <td><input name="column5[]" type="radio" value="row1-column5"></td>
+                        <td><input name="column6[]" type="radio" value="row1-column6"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">Project 1</th>
+                        <td><input name="column1[]" type="radio" value="row2-column1"></td>
+                        <td><input name="column2[]" type="radio" value="row2-column2"></td>
+                        <td><input checked="checked" name="column3[]" type="radio" value="row2-column3"></td>
+                        <td><input checked="checked" name="column4[]" type="radio" value="row2-column4"></td>
+                        <td><input name="column5[]" type="radio" value="row2-column5"></td>
+                        <td><input name="column6[]" type="radio" value="row2-column6"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">Project 2</th>
+                        <td><input name="column1[]" type="radio" value="row3-column1"></td>
+                        <td><input name="column2[]" type="radio" value="row3-column2"></td>
+                        <td><input name="column3[]" type="radio" value="row3-column3"></td>
+                        <td><input name="column4[]" type="radio" value="row3-column4"></td>
+                        <td><input checked="checked" name="column5[]" type="radio" value="row3-column5"></td>
+                        <td><input checked="checked" name="column6[]" type="radio" value="row3-column6"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="tabContent hide" id="servers">
+        <h2>Number of servers</h2>
+        <div>
+            <p>Aggregated number of running containers. Each container is polled for the status from K8S / Prometheus.</p>
+            <table class="table table-header-rotated">
+                <thead>
+                    <tr>
+                        <!-- First column header is not rotated -->
+                        <th></th>
+                        <!-- Following headers are rotated -->
+                        <th class="rotate"><div><span>Total</span></div></th>
+                        <th class="rotate"><div><span>DB</span></div></th>
+                        <th class="rotate"><div><span>App</span></div></th>
+                        <th class="rotate"><div><span>Other</span></div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="row-header">Project 0</th>
+                        <td><input checked="checked" name="column1[]" type="radio" value="row1-column1"></td>
+                        <td><input checked="checked" name="column2[]" type="radio" value="row1-column2"></td>
+                        <td><input name="column3[]" type="radio" value="row1-column3"></td>
+                        <td><input name="column4[]" type="radio" value="row1-column4"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">Project 1</th>
+                        <td><input name="column1[]" type="radio" value="row2-column1"></td>
+                        <td><input name="column2[]" type="radio" value="row2-column2"></td>
+                        <td><input checked="checked" name="column3[]" type="radio" value="row2-column3"></td>
+                        <td><input checked="checked" name="column4[]" type="radio" value="row2-column4"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">Project 2</th>
+                        <td><input name="column1[]" type="radio" value="row3-column1"></td>
+                        <td><input name="column2[]" type="radio" value="row3-column2"></td>
+                        <td><input name="column3[]" type="radio" value="row3-column3"></td>
+                        <td><input name="column4[]" type="radio" value="row3-column4"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="tabContent" id="size">
+        <h2>Data size</h2>
+        <div>
+            <p>Cumulative Data size is provided per aggregated data storage and used capacities.</p>
+            <p>Each line can unfold showing individual dataset used by the particular project.</p>
+            <table class="table table-header-rotated">
+                <thead>
+                    <tr>
+                        <!-- First column header is not rotated -->
+                        <th></th>
+                        <!-- Following headers are rotated -->
+                        <th class="rotate"><div><span>Total</span></div></th>
+                        <th class="rotate"><div><span>DB</span></div></th>
+                        <th class="rotate"><div><span>App</span></div></th>
+                        <th class="rotate"><div><span>Other</span></div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="row-header">Project 0</th>
+                        <td><input checked="checked" name="column1[]" type="radio" value="row1-column1"></td>
+                        <td><input checked="checked" name="column2[]" type="radio" value="row1-column2"></td>
+                        <td><input name="column3[]" type="radio" value="row1-column3"></td>
+                        <td><input name="column4[]" type="radio" value="row1-column4"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">Project 1</th>
+                        <td><input name="column1[]" type="radio" value="row2-column1"></td>
+                        <td><input name="column2[]" type="radio" value="row2-column2"></td>
+                        <td><input checked="checked" name="column3[]" type="radio" value="row2-column3"></td>
+                        <td><input checked="checked" name="column4[]" type="radio" value="row2-column4"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">Project 2</th>
+                        <td><input name="column1[]" type="radio" value="row3-column1"></td>
+                        <td><input name="column2[]" type="radio" value="row3-column2"></td>
+                        <td><input name="column3[]" type="radio" value="row3-column3"></td>
+                        <td><input name="column4[]" type="radio" value="row3-column4"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="tabContent hide" id="costs">
+        <h2>Costs structure</h2>
+        <div>
+            <p>Costs are provided on a chargeback basis, per data / server / project.</p>
+            <p>Estimations can be provided with three scenarios: trend, up-trend, down-trend.</p>
+            <table class="table table-header-rotated">
+                <thead>
+                    <tr>
+                        <!-- First column header is not rotated -->
+                        <th></th>
+                        <!-- Following headers are rotated -->
+                        <th class="rotate"><div><span>Total (from the prod ramp up)</span></div></th>
+                        <th class="rotate"><div><span>Monthly</span></div></th>
+                        <th class="rotate"><div><span>Quarterly</span></div></th>
+                        <th class="rotate"><div><span>Annualy</span></div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="row-header">Project 0</th>
+                        <td><input checked="checked" name="column1[]" type="radio" value="row1-column1"></td>
+                        <td><input checked="checked" name="column2[]" type="radio" value="row1-column2"></td>
+                        <td><input name="column3[]" type="radio" value="row1-column3"></td>
+                        <td><input name="column4[]" type="radio" value="row1-column4"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">Project 1</th>
+                        <td><input name="column1[]" type="radio" value="row2-column1"></td>
+                        <td><input name="column2[]" type="radio" value="row2-column2"></td>
+                        <td><input checked="checked" name="column3[]" type="radio" value="row2-column3"></td>
+                        <td><input checked="checked" name="column4[]" type="radio" value="row2-column4"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">Project 2</th>
+                        <td><input name="column1[]" type="radio" value="row3-column1"></td>
+                        <td><input name="column2[]" type="radio" value="row3-column2"></td>
+                        <td><input name="column3[]" type="radio" value="row3-column3"></td>
+                        <td><input name="column4[]" type="radio" value="row3-column4"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="tabContent hide" id="changes">
+        <h2>Change plans</h2>
+        <div>
+            <p>Descriptive list of changes planned for the project in respect to the Data and Plaform. Use this with caution!</p>
+            <table class="table table-header-rotated">
+                <thead>
+                    <tr>
+                        <!-- First column header is not rotated -->
+                        <th></th>
+                        <!-- Following headers are rotated -->
+                        <th class="rotate"><div><span>Change plans</span></div></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="row-header">Project 0</th>
+                        <td><input checked="checked" name="column1[]" type="radio" value="row1-column1"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">Project 1</th>
+                        <td><input name="column1[]" type="radio" value="row2-column1"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-header">Project 2</th>
+                        <td><input name="column1[]" type="radio" value="row3-column1"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <p><a href="http://localhost/index.html">Return to the Main page</a></p>
+
+
+
+</body></html>
